@@ -44,12 +44,13 @@ public class MainActivity extends Activity {
 	}
 
 	public void geolocation(View view) {
+		sms();
 		Intent geocoding_intent = new Intent(this, GeocodingActivity.class);
 		geocoding_intent.putExtra(LOCATION, _address);
 		startActivity(geocoding_intent);
 	}
 
-	public void sms(View view) {
+	public void sms() {
 		EditText one = (EditText) findViewById(R.id.editText1);
 		EditText two = (EditText) findViewById(R.id.editText2);
 		_phoneNumber = one.getText().toString();

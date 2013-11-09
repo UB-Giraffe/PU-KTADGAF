@@ -29,8 +29,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class GeocodingActivity extends Activity {
 	
-	private GoogleMap mMap;
-
+	private GoogleMap _mMap;
+	private MainActivity _mainActivity;
+	public GeocodingActivity(MainActivity ma){
+		_mainActivity = ma;
+	}
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,7 @@ public class GeocodingActivity extends Activity {
         Intent intent = getIntent();
         String address = intent.getStringExtra(MainActivity.LOCATION);
         
-		mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+		_mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 //		mMap.setMyLocationEnabled(true);
 		
 		Geocoder geocoder = new Geocoder(this);
@@ -56,10 +59,10 @@ public class GeocodingActivity extends Activity {
 			List<Address> list_addresses = geocoder.getFromLocationName(address, 3);
 			double lat = list_addresses.iterator().next().getLatitude();
 			double lng = list_addresses.iterator().next().getLongitude();
-			mMap.addMarker(new MarkerOptions()
+			_mMap.addMarker(new MarkerOptions()
 	        .position(new LatLng(lat, lng))
 	        .title("SendText"));
-			mMap.setMyLocationEnabled(true);
+			_mMap.setMyLocationEnabled(true);
 			
 			
 		} catch (IOException e) {
