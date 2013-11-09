@@ -37,25 +37,25 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
-	public void setLocation() {
+	public void setLocation(View view) {
 		EditText editText = (EditText) findViewById(R.id.edit_message);
 		_address = editText.getText().toString();
 		setContentView(R.layout.activity_texting);
 	}
 
-	public void geolocation() {
-		sms();
+	public void geolocation(View view) {
 		Intent geocoding_intent = new Intent(this, GeocodingActivity.class);
 		geocoding_intent.putExtra(LOCATION, _address);
 		startActivity(geocoding_intent);
 	}
 
-	public void sms() {
+	public void sms(View view) {
 		EditText one = (EditText) findViewById(R.id.editText1);
 		EditText two = (EditText) findViewById(R.id.editText2);
 		_phoneNumber = one.getText().toString();
 		_messageText = two.getText().toString();
-
+	}
+	public void sendSMS(View view){
 		try {
 			SmsManager smsManager = SmsManager.getDefault();
 			smsManager.sendTextMessage(_phoneNumber, null, _messageText, null,
