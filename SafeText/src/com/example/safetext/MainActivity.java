@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
 		_phoneNumber = one.getText().toString();
 		_messageText = two.getText().toString();
 	}
-	public void sendSMS(View view){
+	public void sendSMS(){
 		try {
 			SmsManager smsManager = SmsManager.getDefault();
 			smsManager.sendTextMessage(_phoneNumber, null, _messageText, null,
