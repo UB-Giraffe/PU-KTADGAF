@@ -338,6 +338,7 @@ containing a value of this type.
         public static final int enter_address=0x7f06001e;
         public static final int enter_number=0x7f060022;
         public static final int hello_world=0x7f06001c;
+        public static final int intro=0x7f060025;
         public static final int next=0x7f06001d;
         public static final int title_activity_display_message=0x7f060020;
         public static final int title_activity_list_view_loader=0x7f060021;

@@ -111,6 +111,7 @@ int string compose_message 0x7f060023
 int string enter_address 0x7f06001e
 int string enter_number 0x7f060022
 int string hello_world 0x7f06001c
+int string intro 0x7f060025
 int string next 0x7f06001d
 int string title_activity_display_message 0x7f060020
 int string title_activity_list_view_loader 0x7f060021

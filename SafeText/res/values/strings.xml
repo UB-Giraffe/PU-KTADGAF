@@ -12,5 +12,7 @@
     <string name="enter_number">Enter Number</string>
 	<string name="compose_message">Compose Message</string>
 	<string name="title_activity_texting">TextingActivity</string>
+	<string name="intro">Enter your destinations address, on the following screen you will be prompt for the number and the message to sent.
+	     When you are within a quarter mile of you destination your message will be sent to the recipient.</string>
 	
 </resources>
