@@ -36,7 +36,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class GeocodingActivity extends Activity {
 
-	static final LatLng OKLAHOMA = new LatLng(35.4, -97.4);
+
 	private double _lat;
 	private double _lng;
 	private GoogleMap _mMap;
@@ -69,11 +69,9 @@ public class GeocodingActivity extends Activity {
 		String address = intent.getStringExtra(MainActivity.LOCATION);
 		_mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
-		// mMap.setMyLocationEnabled(true);
-
-		_mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(OKLAHOMA, 15));
-		_mMap.animateCamera(CameraUpdateFactory.zoomTo(3), 2000, null);
-
+//		static final LatLng OKLAHOMA = new LatLng(35.4, -97.4);	static final LatLng OKLAHOMA = new LatLng(35.4, -97.4);
+//		_mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(OKLAHOMA, 15));
+//		_mMap.animateCamera(CameraUpdateFactory.zoomTo(3), 2000, null);
 		Geocoder geocoder = new Geocoder(this);
 
 		try {
@@ -84,17 +82,18 @@ public class GeocodingActivity extends Activity {
 			_mMap.addMarker(new MarkerOptions()
 					.position(new LatLng(_lat, _lng)).title("SendText"));
 			_mMap.setMyLocationEnabled(true);
+			_mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(_lat,_lng) , 14.0f) );
 
 			LocationManager locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 			SafeTextListener listener = new SafeTextListener();
-			// set updates for every two minutes or 5 meters
+			// set updates for every two minutes or five meters
 			locManager.requestLocationUpdates(locManager.GPS_PROVIDER, 2, 5, listener);
 					
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			TextView textview = new TextView(this);
 			textview.setTextSize(40);
-			textview.setText("ERROR");
+			textview.setText("CHECK NETWORK CONNECTION");
 			setContentView(textview);
 			e.printStackTrace();
 		}

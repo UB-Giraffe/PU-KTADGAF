@@ -23,10 +23,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		// SmsManager smsManager = SmsManager.getDefault();
-		// smsManager.sendTextMessage("7167831393", null,
-		// "YES, IM GETTING SOMEWHERE", null, null);
-
 	}
 
 	@Override
