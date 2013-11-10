@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +36,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class GeocodingActivity extends Activity {
 
-	static final LatLng OKLAHOMA = new LatLng(35.283, 97.3058);
+	static final LatLng OKLAHOMA = new LatLng(35.4, -97.4);
 	private double _lat;
 	private double _lng;
 	private GoogleMap _mMap;
@@ -46,6 +47,15 @@ public class GeocodingActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_texting);
+
+	}
+	
+	public void geolocation(View view){
+		EditText one = (EditText) findViewById(R.id.editText1);
+		EditText two = (EditText) findViewById(R.id.editText2);
+		_phoneNumber = one.getText().toString();
+		_messageText = two.getText().toString();
 		setContentView(R.layout.main_map);
 		/**
 		 * Set up the {@link android.app.ActionBar}.
@@ -57,14 +67,13 @@ public class GeocodingActivity extends Activity {
 		// Get the message from the intent
 		Intent intent = getIntent();
 		String address = intent.getStringExtra(MainActivity.LOCATION);
-
 		_mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
 		// mMap.setMyLocationEnabled(true);
 
 		_mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(OKLAHOMA, 15));
-		_mMap.animateCamera(CameraUpdateFactory.zoomTo(10),2000,null);
-		
+		_mMap.animateCamera(CameraUpdateFactory.zoomTo(3), 2000, null);
+
 		Geocoder geocoder = new Geocoder(this);
 
 		try {
@@ -77,47 +86,10 @@ public class GeocodingActivity extends Activity {
 			_mMap.setMyLocationEnabled(true);
 
 			LocationManager locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-			locManager.requestLocationUpdates(locManager.GPS_PROVIDER, 2, 5,
-					new LocationListener() {
-
-						@Override
-						public void onLocationChanged(Location location) {
-							double myLat = location.getLatitude(); // location
-																	// we're at
-							double myLong = location.getLongitude(); // location
-																		// we're
-																		// at
-							if ((myLat > _lat - 0.003618)
-									&& (myLat < _lat + 0.003618)) {
-								if ((myLong > _lng - 0.003618)
-										&& (myLong < _lng + 0.003618)) {
-									sendSMS();
-								}
-							}
-
-						}
-
-						@Override
-						public void onProviderDisabled(String provider) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void onProviderEnabled(String provider) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void onStatusChanged(String provider,
-								int status, Bundle extras) {
-							// TODO Auto-generated method stub
-
-						}
-
-					});
-
+			SafeTextListener listener = new SafeTextListener();
+			// set updates for every two minutes or 5 meters
+			locManager.requestLocationUpdates(locManager.GPS_PROVIDER, 2, 5, listener);
+					
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			TextView textview = new TextView(this);
@@ -153,28 +125,70 @@ public class GeocodingActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void sms() {
-		EditText one = (EditText) findViewById(R.id.editText1);
-		EditText two = (EditText) findViewById(R.id.editText2);
-		_phoneNumber = one.getText().toString();
-		_messageText = two.getText().toString();
+	public void sendSMS() {
+		 try {
+		 SmsManager smsManager = SmsManager.getDefault();
+		 smsManager.sendTextMessage(_phoneNumber, null, _messageText, null,
+		 null);
+		 Toast.makeText(getApplicationContext(),
+		 "SMS Sent!",Toast.LENGTH_LONG).show();
+		 // Toast.makeText(getApplicationContext(), _phoneNumber,
+		 // Toast.LENGTH_LONG).show();
+		 } catch (Exception e) {
+		 Toast.makeText(getApplicationContext(),
+		 "SMS faild, please try again later!", Toast.LENGTH_LONG)
+		 .show();
+		 e.printStackTrace();
+		 }
+//		SmsManager smsManager = SmsManager.getDefault();
+//		smsManager.sendTextMessage("7163926365", null, "The problem was in teh sendSMS method", null, null);
+	}
+	private class SafeTextListener implements LocationListener {
+		
+		private boolean _sent;
+		public SafeTextListener(){
+			_sent = false;
+		}
+
+		@Override
+		public void onLocationChanged(Location location) {
+			double myLat = location.getLatitude(); // location
+													// we're at
+			double myLong = location.getLongitude(); // location
+														// we're
+			if(!_sent){											// at
+			if ((myLat > _lat - 0.003618)
+					&& (myLat < _lat + 0.003618)) {
+				if ((myLong > _lng - 0.003618)
+						&& (myLong < _lng + 0.003618)) {
+					sendSMS();
+					_sent = true;
+				}
+			}
+			}
+
+		}
+
+		@Override
+		public void onProviderDisabled(String provider) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onProviderEnabled(String provider) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onStatusChanged(String provider,
+				int status, Bundle extras) {
+			// TODO Auto-generated method stub
+
+		}
+
 	}
 
-	public void sendSMS() {
-		try {
-			SmsManager smsManager = SmsManager.getDefault();
-			smsManager.sendTextMessage(_phoneNumber, null, _messageText, null,
-					null);
-			// Toast.makeText(getApplicationContext(),
-			// "SMS Sent!",Toast.LENGTH_LONG).show();
-			Toast.makeText(getApplicationContext(), _phoneNumber,
-					Toast.LENGTH_LONG).show();
-		} catch (Exception e) {
-			Toast.makeText(getApplicationContext(),
-					"SMS faild, please try again later!", Toast.LENGTH_LONG)
-					.show();
-			e.printStackTrace();
-		}
-	}
 
 }

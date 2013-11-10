@@ -23,8 +23,9 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-//	    SmsManager smsManager = SmsManager.getDefault();
-//	    smsManager.sendTextMessage("7167831393", null, "YES, IM GETTING SOMEWHERE", null, null);
+		// SmsManager smsManager = SmsManager.getDefault();
+		// smsManager.sendTextMessage("7167831393", null,
+		// "YES, IM GETTING SOMEWHERE", null, null);
 
 	}
 
@@ -38,10 +39,6 @@ public class MainActivity extends Activity {
 	public void setLocation(View view) {
 		EditText editText = (EditText) findViewById(R.id.edit_message);
 		_address = editText.getText().toString();
-		setContentView(R.layout.activity_texting);
-	}
-
-	public void geolocation(View view) {
 		Intent geocoding_intent = new Intent(this, GeocodingActivity.class);
 		geocoding_intent.putExtra(LOCATION, _address);
 		startActivity(geocoding_intent);
